@@ -13,7 +13,8 @@ const PATHS = {
     path.join(__dirname, 'node_modules', 'purecss'),
     path.join(__dirname, 'app', 'main.css')
   ],
-  build: path.join(__dirname, 'build')
+  build: path.join(__dirname, 'build'),
+  images: path.join(__dirname, 'app', 'images')
 };
 
 
@@ -51,7 +52,8 @@ switch(process.env.npm_lifecycle_event) {
     config = merge(
       common,       
       parts.extractCSS(PATHS.style),
-       parts.purifyCSS([PATHS.app]),
+      parts.purifyCSS([PATHS.app]),
+      
       {
        devtool: 'source-map'
       },
@@ -64,7 +66,9 @@ switch(process.env.npm_lifecycle_event) {
         entries: ['react']
       }),
       parts.minify(),
-      parts.clean(PATHS.build)
+      parts.clean(PATHS.build),
+      parts.extractImage([PATHS.images])
+
       );
     break;
   default:
@@ -82,6 +86,6 @@ switch(process.env.npm_lifecycle_event) {
     );
 }
 
-console.log(config);
+console.log(path+", "+__dirname);
 
 module.exports = validate(config, {quiet:true});
